@@ -1,0 +1,18 @@
+@import "../../node_modules/bootstrap/scss/functions";
+
+$primary: #EBDDCB;
+$dark: #CFAD81;
+$navbar-padding-y: 0.8rem;
+$navbar-padding-x: 2rem;
+$navbar-bg: #CFAD81;
+$navbar-light-color: #fff;
+$navbar-light-hover-color: #333;
+$navbar-light-active-color: #333;
+$navbar-light-brand-color: #fff;
+$navbar-light-brand-hover-color: #eee;
+
+$nav-link-color: #fff;
+$nav-link-hover-color: #eee;
+$nav-link-disabled-color: rgba(255,255,255,0.4);
+
+@import "../../node_modules/bootstrap/scss/bootstrap";
