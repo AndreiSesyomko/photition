@@ -1,6 +1,6 @@
 import {makeAutoObservable} from "mobx";
 
-export default class PhotosStore
+export default class PhotoListStore
 {
     constructor()
     {
@@ -51,13 +51,13 @@ export default class PhotosStore
         makeAutoObservable(this);
     }
 
-    setUser(user)
+    setPhotos(photos)
     {
-        this._user = user;
+        this._photos = photos;
     }
 
-    get user()
+    get photos()
     {
-        return this._user;
+        return this._photos;
     }
 }

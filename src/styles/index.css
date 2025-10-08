@@ -25,10 +25,107 @@ body {
   font-size: 1.5em;
 }
 
+.main {
+  margin: 0 auto;
+  margin-top: 59px;
+  margin-bottom: 19px;
+  background: #fff;
+  border-radius: 25px;
+  height: 700px;
+  width: 60%;
+  padding: 35px;
+}
+
 .circle {
   background-color: #fff;
   width: 50px;
   height: 50px;
   border-radius: 50%;
   text-align: center;
+}
+
+.custom-scrollbar {
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #EBDDCB white;
+  max-height: 580px;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: white;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #EBDDCB;
+  border-radius: 10px;
+  border: 2px solid white;
+  transition: background 0.2s, border 0.2s; /* Плавный переход */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #cc25f7;   /* Цвет при ховере */
+  border: 2px solid #e0d3ec;   /* Цвет бордера при ховере */
+}
+
+.photo-card {
+  margin-top: 25px;
+  height: 550px !important;
+}
+
+.photo-card:first-child {
+  margin-top: 0;
+}
+
+#dropdown-basic-button {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.custom-dropdown-btn {
+  border-radius: 20px !important;
+  border: 1px solid #c6a174 !important;
+  background: white !important;
+  color: #b4977e !important;
+  font-weight: 700;
+  padding: 8px 18px !important;
+  width: 100%;
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.15s, color 0.15s;
+  margin-bottom: 20px;
+}
+
+.custom-dropdown-btn:hover, .custom-dropdown-btn:focus, .custom-dropdown-btn.show {
+  background: #c6a174 !important;
+  color: #fff !important;
+}
+
+.custom-dropdown-chevron {
+  margin-left: 12px;
+  color: #c6a174;
+  transition: color 0.15s;
+}
+.custom-dropdown-btn:hover .custom-dropdown-chevron,
+.custom-dropdown-btn:focus .custom-dropdown-chevron,
+.custom-dropdown-btn.show .custom-dropdown-chevron {
+  color: #fff;
+}
+
+.custom-dropdown-btn::after {
+  content: none !important;
+  display: none !important;
+}
+
+.custom-dropdown-menu {
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
 }
