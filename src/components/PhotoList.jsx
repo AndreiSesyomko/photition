@@ -7,7 +7,7 @@ const PhotoList = () => {
     const {photoList} = useContext(Context);
     return (
         <div className="custom-scrollbar">
-            {photoList.photos.map((photo) => <PhotoCard photo={photo}/>)}
+            {photoList.photos.map((photo) => <PhotoCard key={photo.id} photo={photo}/>)}
         </div>
     );
 };

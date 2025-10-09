@@ -23,10 +23,12 @@ const App = observer(() => {
 
   return (
       <BrowserRouter>
-        <NavBar/>
-        <AppRouter />
-        <div style={{height: '60px'}}></div>
-        <Footer/>
+        <div className="d-flex flex-column align-items-center justify-content-between">
+            <NavBar/>
+            <AppRouter />
+            <div style={{height: '60px'}}></div>
+            <Footer/>
+        </div>
       </BrowserRouter>
   );
 })
