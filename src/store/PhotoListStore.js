@@ -1,15 +1,15 @@
 import {makeAutoObservable} from "mobx";
 
-export default class PhotosStore
+export default class PhotoListStore
 {
     constructor()
     {
         this._photos = [
             {
                 id: 1,
-                title: 'Photo',
-                description: 'Photo',
-                photo: '',
+                title: 'Дженифер Коннели',
+                description: 'Дженифер Коннели',
+                photo: 'test_photos/dzhennifer-konnelli.jpg',
                 user: {
                     id: 1,
                     username: 'user1',
@@ -20,13 +20,13 @@ export default class PhotosStore
                 publishedAt: '2025-10-08'
             },
             {
-                id: 1,
-                title: 'Photo',
-                description: 'Photo',
-                photo: '',
+                id: 2,
+                title: 'Кэтрин Зета-Джонс',
+                description: 'Кэтрин Зета-Джонс',
+                photo: 'test_photos/CatherineZeta-Jones.jpg',
                 user: {
-                    id: 1,
-                    username: 'user1',
+                    id: 2,
+                    username: 'user2',
                     avatar: ''
                 },
                 likes: 256,
@@ -34,30 +34,31 @@ export default class PhotosStore
                 publishedAt: '2025-10-08'
             },
             {
-                id: 1,
-                title: 'Photo',
-                description: 'Photo',
-                photo: '',
+                id: 3,
+                title: 'Сальма Хайек',
+                description: 'Сальма Хайек',
+                photo: 'test_photos/salma-hajek-1.jpg',
                 user: {
-                    id: 1,
-                    username: 'user1',
-                    avatar: ''
+                    id: 3,
+                    username: 'user3',
+                    avatar: 'test_photos/salma-hajek-1.jpg'
                 },
                 likes: 256,
                 comments: 3,
                 publishedAt: '2025-10-08'
             },
+
         ];
         makeAutoObservable(this);
     }
 
-    setUser(user)
+    setPhotos(photos)
     {
-        this._user = user;
+        this._photos = photos;
     }
 
-    get user()
+    get photos()
     {
-        return this._user;
+        return this._photos;
     }
 }
