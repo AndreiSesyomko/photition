@@ -4,6 +4,7 @@ export default class PhotoListStore
 {
     constructor()
     {
+        this._target = {}
         this._photos = [
             {
                 id: 1,
@@ -11,7 +12,7 @@ export default class PhotoListStore
                 description: 'Дженифер Коннели',
                 photo: 'test_photos/dzhennifer-konnelli.jpg',
                 user: {
-                    id: 1,
+                    id: 6,
                     username: 'user1',
                     avatar: ''
                 },
@@ -25,7 +26,7 @@ export default class PhotoListStore
                 description: 'Кэтрин Зета-Джонс',
                 photo: 'test_photos/CatherineZeta-Jones.jpg',
                 user: {
-                    id: 2,
+                    id: 6,
                     username: 'user2',
                     avatar: ''
                 },
@@ -60,5 +61,13 @@ export default class PhotoListStore
     get photos()
     {
         return this._photos;
+    }
+
+    setTarget(target) {
+        this._target = target;
+    }
+
+    get target() {
+        return this._target;
     }
 }

@@ -3,11 +3,10 @@ import PhotoCard from "./PhotoCard";
 import {observer} from "mobx-react-lite";
 import {Context} from "../index";
 
-const PhotoList = () => {
-    const {photoList} = useContext(Context);
+const PhotoList = ({photos, style=null}) => {
     return (
-        <div className="custom-scrollbar">
-            {photoList.photos.map((photo) => <PhotoCard key={photo.id} photo={photo}/>)}
+        <div style={style} className="custom-scrollbar">
+            {photos.map((photo) => <PhotoCard key={photo.id} photo={photo}/>)}
         </div>
     );
 };

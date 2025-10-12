@@ -1,9 +1,9 @@
 import React from 'react';
 import { Image } from 'react-bootstrap';
 
-const Photo = ({ photoUrl }) => {
+const Photo = ({ photoUrl, onClick }) => {
     return (
-        <div style={{
+        <div onClick={onClick} style={{
             position: 'relative',
             width: '100%',
             height: '80%',

@@ -1,12 +1,17 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Card, Image} from "react-bootstrap";
-import {Heart, Chat, Person} from 'react-bootstrap-icons';
+import {Heart, Chat, Person, PencilFill} from 'react-bootstrap-icons';
 import Photo from "./Photo";
 import {useNavigate} from "react-router-dom";
+import { Context } from '..';
+import { observer } from 'mobx-react-lite';
+import EditCardModal from './modals/EditCardModal';
 
 const PhotoCard = ({photo}) => {
     const [showDesc, setShowDesc] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false)
     const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+    const {user} = useContext(Context)
     const navigate = useNavigate();
     const handleMouseMove = (e) => {
         setCursorPos({
@@ -15,11 +20,12 @@ const PhotoCard = ({photo}) => {
         });
     };
     return (
-        <Card
+        <>
+            <Card
             onMouseMove={handleMouseMove}
             onMouseEnter={() => setShowDesc(true)}
             onMouseLeave={() => setShowDesc(false)}
-            onClick={() => navigate('photo/' + photo.id)}
+            
             className="photo-card"
         >
             <Card.Header className="d-flex justify-content-between align-items-center" style={{ padding: '8px 24px' }}>
@@ -29,11 +35,11 @@ const PhotoCard = ({photo}) => {
                     </div>
                     <span style={{ fontWeight: '700', color: '#CFAD81' }}>{photo.user.username}</span>
                 </div>
-                <h5 style={{marginRight: '20px'}}>{photo.title}</h5>
+                <h5 style={{marginRight: '20px'}}>{photo.title}{user.user.id === photo.user.id && <PencilFill onClick={() => setShowEditModal(true)} className="pencil-icon"/>}</h5>
                 <span style={{ fontWeight: '600' }}>{photo.publishedAt}</span>
             </Card.Header>
-            {photo.photo ? <Photo photoUrl={photo.photo} />:
-                <div style={{height: '100%', backgroundColor: '#ccc'}}></div>}
+            {photo.photo ? <Photo onClick={() => navigate('/photo/' + photo.id)} photoUrl={photo.photo} />:
+                <div onClick={() => navigate('/photo/' + photo.id)} style={{height: '100%', backgroundColor: '#ccc'}}></div>}
             <Card.Footer className="d-flex justify-content-center align-items-center" style={{ padding: '8px 12px', borderRadius: '0 0 15px 15px' }}>
                 <div className="d-flex align-items-center my-icon" style={{gap: '10px', marginRight: '24px'}}>
                     <span style={{fontWeight: '600'}}>{photo.likes}</span>
@@ -64,7 +70,9 @@ const PhotoCard = ({photo}) => {
                 </div>
             )}
         </Card>
+        <EditCardModal show={showEditModal} onHide={() => setShowEditModal(false)}/>
+        </>
     );
 };
 
-export default PhotoCard;
+export default observer(PhotoCard);
