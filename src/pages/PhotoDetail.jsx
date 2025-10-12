@@ -1,85 +1,194 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, Image, Form, Button, InputGroup } from 'react-bootstrap';
-import { Heart } from 'react-bootstrap-icons';
-import { ReactComponent as UserIcon } from '../assets/user.svg';
+import {Heart, Chat, Person, ArrowRight, Arrow90degRight} from 'react-bootstrap-icons';
+import Photo from "../components/Photo";
+import Comment from '../components/Comment.jsx'
+import EditCommentModal from '../components/modals/EditCommentModal.jsx';
 
-const Comment = ({ username, avatar, date, text, replies }) => (
-    <div style={{ border: '1px solid #f1ebe0', borderRadius: 8, padding: 8, marginBottom: 8 }}>
-        <div className="d-flex justify-content-between" style={{ fontSize: 12, color: '#977559' }}>
-            <div className="d-flex align-items-center" style={{ gap: '6px' }}>
-                <div style={{ borderRadius: '50%', border: '1px solid #96794e', padding: '2px 6px' }}>
-                    {avatar ? <Image src={avatar} roundedCircle width={18} height={18} /> : <UserIcon width={18} height={18} />}
-                </div>
-                <span>{username}</span>
-            </div>
-            <div>{date}</div>
-        </div>
-        <div style={{ fontSize: 14, color: '#654d3d', marginTop: 4 }}>{text}</div>
-        {replies && replies.length > 0 && (
-            <div style={{ marginTop: 8, marginLeft: 20, borderLeft: '1px solid #96794e', paddingLeft: 8 }}>
-                {replies.map((rep, idx) => (
-                    <Comment key={idx} {...rep} />
-                ))}
-            </div>
-        )}
-    </div>
-);
 
-const PhotoDetail = ({ photo }) => {
+const test = {
+                id: 1,
+                title: 'Дженифер Коннели',
+                description: 'Дженифер Коннели',
+                photo: '../test_photos/dzhennifer-konnelli.jpg',
+                user: {
+                    id: 1,
+                    username: 'user1',
+                    avatar: ''
+                },
+                likes: 256,
+                commentsCount: 3,
+                comments: [
+                    {
+                        id: 1,
+                        comment: "she's best!",
+                        user: {
+                            id: 1,
+                            username: 'user1',
+                            avatar: ''
+                        },
+                        publishedAt: '2025-10-08',
+                        editedAt: null,
+                        reply_to: null,
+                        sub_of: null,
+                        replies: []
+                    },
+                    {
+                        id: 2,
+                        comment: "she's best actress!",
+                        user: {
+                            id: 2,
+                            username: 'user1',
+                            avatar: ''
+                        },
+                        publishedAt: '2025-10-08',
+                        editedAt: '2025-10-11',
+                        reply_to: null,
+                        sub_of: null,
+                        replies: []
+                    },
+                    {
+                        id: 3,
+                        comment: "she's best actress!",
+                        user: {
+                            id: 3,
+                            username: 'user1',
+                            avatar: ''
+                        },
+                        publishedAt: '2025-10-08',
+                        editedAt: null,
+                        reply_to: null,
+                        sub_of: null,
+                        replies: [
+                            {
+                        id: 4,
+                        comment: "and she's beautiful!",
+                        user: {
+                            id: 4,
+                            username: 'user2',
+                            avatar: ''
+                        },
+                        publishedAt: '2025-10-08',
+                        editedAt: null,
+                        reply_to: {
+                        id: 3,
+                        comment: "she's best!",
+                        user: {
+                            id: 3,
+                            username: 'user1',
+                            avatar: ''
+                        },
+                        publishedAt: '2025-10-08',
+                        editedAt: null,
+                        
+                    },
+                        sub_of: 3,
+                        replies: []
+                    },
+                    {
+                        id: 5,
+                        comment: "you're goddamn right!",
+                        user: {
+                            id: 5,
+                            username: 'user3',
+                            avatar: ''
+                        },
+                        publishedAt: '2025-10-08',
+                        editedAt: null,
+                        reply_to: {
+                        id: 4,
+                        comment: "she's best!",
+                        user: {
+                            id: 4,
+                            username: 'user2',
+                            avatar: ''
+                        },
+                        publishedAt: '2025-10-08',
+                        editedAt: null,
+                        
+                    },
+                        sub_of: 3,
+                        replies: []
+                    },
+                        ]
+                    },
+                    
+                    {
+                        id: 6,
+                        comment: "she's best actress!",
+                        user: {
+                            id: 6,
+                            username: 'user',
+                            avatar: ''
+                        },
+                        publishedAt: '2025-10-08',
+                        editedAt: null,
+                        reply_to: null,
+                        sub_of: null,
+                        replies: []
+                    },
+                ],
+                publishedAt: '2025-10-08'
+            }
+
+const PhotoDetail = ({ photo=test }) => {
+    const [replyInput, setReplyInput] = useState(null);
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [editableComment, setEditableComment] = useState(null);
     return (
-        <Card
-            style={{ maxWidth: 400, borderRadius: 15, backgroundColor: '#f7f2e9', padding: 0, overflow: 'hidden' }}
-            className="shadow-sm"
-        >
-            <Card.Header className="d-flex justify-content-between align-items-center" style={{ backgroundColor: '#f7f2e9', borderBottom: 'none', padding: '8px 16px' }}>
-                <div className="d-flex align-items-center" style={{ gap: 6 }}>
-                    <div style={{ borderRadius: '50%', border: '1px solid #96794e', padding: 4 }}>
-                        {photo.user.avatar ? (
-                            <Image src={photo.user.avatar} roundedCircle width={30} height={30} />
-                        ) : (
-                            <UserIcon width={30} height={30} />
-                        )}
+        <>
+        <div className='main' style={{height: 'auto'}}>
+            <Card
+                    className="photo-card"
+                >
+                    <Card.Header className="d-flex justify-content-between align-items-center" style={{ padding: '8px 24px' }}>
+                        <div className="d-flex align-items-center" style={{ gap: '8px' }}>
+                            <div style={{ borderRadius: '50%', height: '59px', width: '59px', overflow: 'hidden', border: '1px solid #CFAD81', padding: '4px', transform: 'scale(0.8)' }}>
+                                {photo.user.avatar ? <Image style={{height: '100%', width: '100%', borderRadius: '50%'}} src={photo.user.avatar} /> : <Person className="card-avatar" />}
+                            </div>
+                            <span style={{ fontWeight: '700', color: '#CFAD81' }}>{photo.user.username}</span>
+                        </div>
+                        <h5 style={{marginRight: '20px'}}>{photo.title}</h5>
+                        <span style={{ fontWeight: '600' }}>{photo.publishedAt}</span>
+                    </Card.Header>
+                    {photo.photo ? <Photo photoUrl={photo.photo} />:
+                        <div style={{height: '100%', backgroundColor: '#ccc'}}></div>}
+                    <Card.Footer className="d-flex justify-content-start align-items-center" style={{ padding: '8px 12px', borderRadius: '0 0 15px 15px' }}>
+                        <div className="d-flex align-items-center my-icon" style={{gap: '10px', marginRight: '24px'}}>
+                            <span style={{fontWeight: '600'}}>{photo.likes}</span>
+                            <Heart style={{marginTop: '3px'}} size={20}/>
+                        </div>
+                    </Card.Footer>
+                </Card>
+                <div className='detail'>
+                    <h5>Описание</h5>
+                    <p>{photo.description ? photo.description : photo.title}</p>
+                </div>
+                {[photo.commentsCount &&
+                    <div className='detail'>
+                        <h5>Комментарии {photo.commentsCount}</h5>
+                        <InputGroup className="mb-3 mt-3">
+                            <Form.Control
+                            placeholder="Комментарий"
+                            aria-label="Recipient's username"
+                            aria-describedby="basic-addon2"
+                            />
+                            <Button variant="primary" id="button-addon2">
+                                Отправить <ArrowRight/>
+                            </Button>
+                        </InputGroup>
+                        {photo.comments.map(comment => <Comment 
+                            key={comment.id} 
+                            comment={comment} 
+                            replyInput={replyInput} 
+                            setReplyInput={setReplyInput} 
+                            setEdit={setEditableComment} 
+                            setShowModal={setShowEditModal}/>)}
                     </div>
-                    <span style={{ color: '#a68463', fontWeight: '600' }}>{photo.user.username}</span>
-                </div>
-                <span style={{ fontWeight: '600', color: '#cbb49a' }}>{photo.publishedAt}</span>
-            </Card.Header>
-
-            <div style={{ height: 180, backgroundColor: '#ccc' }}>
-                {photo.photo ? (
-                    <Image src={photo.photo} alt="photo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                ) : (
-                    <div style={{ height: '100%', backgroundColor: '#ccc' }} />
-                )}
-            </div>
-
-            <Card.Body style={{ padding: '0 16px' }}>
-                <div className="d-flex align-items-center" style={{ gap: 6, padding: '8px 0' }}>
-                    <Heart size={20} color="#654d3d" />
-                    <span style={{ fontWeight: '600' }}>{photo.likes}</span>
-                </div>
-                <div style={{ fontWeight: '600', color: '#b1936e', fontSize: 16, marginBottom: 4 }}>Описание</div>
-                <p style={{ fontSize: 14, color: '#654d3d', marginBottom: 16 }}>
-                    {photo.description}
-                </p>
-
-                <div style={{ fontWeight: '600', color: '#b1936e', fontSize: 16, marginBottom: 8 }}>Комментарии <span style={{ fontWeight: '400', color: '#96794e' }}>{photo.commentsCount}</span></div>
-
-                <Form>
-                    <InputGroup className="mb-3">
-                        <Form.Control as="textarea" placeholder="Комментарий" rows={2} />
-                        <Button variant="warning" style={{ backgroundColor: '#cbb49a', borderColor: '#cbb49a' }}>
-                            Отправить &rarr;
-                        </Button>
-                    </InputGroup>
-                </Form>
-
-                {/* Комментарии список */}
-                {photo.comments && photo.comments.map((cmt, idx) => (
-                    <Comment key={idx} {...cmt} />
-                ))}
-            </Card.Body>
-        </Card>
+                ]}
+        </div>
+        <EditCommentModal show={showEditModal} onHide={() => setShowEditModal(false)} target={editableComment}/>
+        </>
     );
 };
 

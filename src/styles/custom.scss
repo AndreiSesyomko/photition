@@ -1,6 +1,8 @@
 @import "../../node_modules/bootstrap/scss/functions";
 
 $primary: #EBDDCB;
+$btn-primary-color: #fff;
+
 $dark: #CFAD81;
 $navbar-padding-y: 0.8rem;
 $navbar-padding-x: 2rem;
@@ -15,4 +17,17 @@ $nav-link-color: #fff;
 $nav-link-hover-color: #eee;
 $nav-link-disabled-color: rgba(255,255,255,0.4);
 
+
+
 @import "../../node_modules/bootstrap/scss/bootstrap";
+
+.btn-primary {
+  color: #fff;
+  background-color: #CFAD81;
+  transition: .2s;
+}
+
+.btn-primary:hover {
+    color: #CFAD81;
+    background-color: #fff;
+}

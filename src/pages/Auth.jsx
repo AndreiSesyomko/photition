@@ -6,36 +6,36 @@ const Auth = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
-    const [error, setError] = useState(null);
+    const [errors, setErrors] = useState(null);
 
     const switchMode = () => {
         setIsRegister(!isRegister);
         setEmail('');
         setPassword('');
         setUsername('');
-        setError(null);
+        setErrors(null);
     };
 
     const validateEmail = (email) => {
         return /^\S+@\S+\.\S+$/.test(email);
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (!email || !validateEmail(email)) {
-            setError('Пожалуйста, введите корректный Email.');
-            return;
-        }
-        if (!password) {
-            setError('Пожалуйста, введите пароль.');
-            return;
-        }
-        if (isRegister && !username) {
-            setError('Пожалуйста, введите имя пользователя.');
-            return;
-        }
-        setError(null);
+    const validate = () => {
+        const newErrors = {};
+        if (!(username.trim().length > 4 && username.trim().length < 30)) newErrors.name = "Username должен быть не менее 4 символов и не более 30";
+        if (!(password.trim().length > 4 && password.trim().length < 30)) newErrors.password = "Пароль должен быть не менее 4 символов и не более 30";
+        if (!email.trim()) newErrors.email = "Email обязателен";
+        else if (!validateEmail(email)) newErrors.email = "Неправильный email";
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
     };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    if (validate()) {
+    }
+  };
     return (
         <Container
             className="d-flex justify-content-center align-items-center"
@@ -45,31 +45,50 @@ const Auth = () => {
                 style={{
                     width: '400px',
                     borderRadius: '15px',
-                    backgroundColor: 'rgba(255, 255, 255, 0.85)',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
                     padding: '20px',
                     position: 'relative'
                 }}
             >
-                <h3 className="text-center mb-4" style={{ color: '#a676cd' }}>
+                <h3 className="text-center mb-4">
                     {isRegister ? 'Регистрация' : 'Авторизация'}
                 </h3>
 
-                <Form>
-                    <Form.Group className="mb-3">
-                        <Form.Label style={{ color: '#a676cd' }}>Email</Form.Label>
-                        <Form.Control value={email} onChange={e => setEmail(e.target.value)} type="email" placeholder="Введите email" style={{ borderColor: '#a676cd', borderRadius: '20px' }} />
+                    <Form.Group  className="mb-3">
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control
+                            type="email"
+                            placeholder="Email"
+                            value={email}
+                            isInvalid={errors?.email}
+                            onChange={e => setEmail(e.target.value)}
+                            className="mb-3"
+                        />
+                        <Form.Control.Feedback type="invalid">{errors?.email}</Form.Control.Feedback>
                     </Form.Group>
 
                     <Form.Group className="mb-3">
-                        <Form.Label style={{ color: '#a676cd' }}>Пароль</Form.Label>
-                        <Form.Control value={password} onChange={e => setPassword(e.target.value)} type="password" placeholder="Введите пароль" style={{ borderColor: '#a676cd', borderRadius: '20px' }} />
+                        <Form.Label>Пароль</Form.Label>
+                        <Form.Control
+                                placeholder="Пароль"
+                                value={password}
+                                isInvalid={errors?.password}
+                                onChange={e => setPassword(e.target.value)}
+                                className="mb-3"
+                            />
+                            <Form.Control.Feedback type="invalid">{errors?.password}</Form.Control.Feedback>
                     </Form.Group>
 
                     {isRegister && (
                         <Form.Group className="mb-3">
-                            <Form.Label style={{ color: '#a676cd' }}>Username</Form.Label>
-                            <Form.Control value={username} onChange={e => setUsername(e.target.value)} type="text" placeholder="Введите username" style={{ borderColor: '#a676cd', borderRadius: '20px' }} />
+                            <Form.Label>Username</Form.Label>
+                            <Form.Control
+                                placeholder="Username"
+                                value={username}
+                                isInvalid={errors?.name}
+                                onChange={e => setUsername(e.target.value)}
+                                className="mb-3"
+                            />
+                            <Form.Control.Feedback type="invalid">{errors?.name}</Form.Control.Feedback>
                         </Form.Group>
                     )}
 
@@ -77,39 +96,15 @@ const Auth = () => {
                         variant="primary"
                         onClick={handleSubmit}
                         className="w-100 mt-3"
-                        style={{
-                            background: 'linear-gradient(135deg, #a676cd, #c374be)',
-                            border: 'none',
-                            borderRadius: '20px',
-                            color: 'white'
-                        }}
                     >
                         {isRegister ? 'Зарегистрироваться' : 'Войти'}
                     </Button>
-                </Form>
 
                 <Row className="mt-3">
-                    <Col className="text-center" style={{ fontSize: '14px', color: '#a676cd', cursor: 'pointer' }} onClick={switchMode}>
-                        {isRegister ? 'Уже есть аккаунт? ' : 'Нет аккаунта? '} <span onClick={switchMode} style={{textDecoration: 'underline'}}>{isRegister ? 'Войти! ' : 'Зарегистрироваться! '}</span>
+                    <Col className="text-center" style={{color: '#CFAD81'}} onClick={switchMode}>
+                        {isRegister ? 'Уже есть аккаунт? ' : 'Нет аккаунта? '} <span onClick={switchMode} style={{textDecoration: 'underline', cursor: 'pointer'}}>{isRegister ? 'Войти! ' : 'Зарегистрироваться! '}</span>
                     </Col>
                 </Row>
-                {error && (
-                    <Alert
-                        variant="danger"
-                        onClose={() => setError(null)}
-                        dismissible
-                        style={{
-                            position: 'absolute',
-                            top: '500px',
-                            left: '50%',
-                            transform: 'translateX(-50%)',
-                            width: '90%',
-                            zIndex: 1050,
-                        }}
-                    >
-                        {error}
-                    </Alert>
-                )}
             </Card>
         </Container>
     );
