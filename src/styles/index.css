@@ -173,7 +173,7 @@ body {
 }
 
 .detail {
-  padding: 15px;
+  padding: 15px 0;
   border-bottom: 1px solid #CFAD81;
 }
 
@@ -181,6 +181,77 @@ body {
   border: none;
 }
 
-.detail > h3 {
+.detail > h5 {
   color: #CFAD81;
+}
+
+.comment {
+  margin-bottom: 20px;
+}
+
+.comment-replyto {
+  font-weight: bold;
+  color: #CFAD81;
+}
+
+.comment-text {
+  font-size: 1.25em;
+}
+
+.comment-answer {
+  color: #CFAD81;
+  font-weight: bold;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.comment-answer:hover {
+  color: #cebda8;
+}
+
+.comment-replies > h5 {
+  color:#CFAD81;
+  margin-bottom: 15px;
+}
+
+.pencil-icon {
+  background: #fff;
+  padding: 5px;
+  border: 1px solid #CFAD81;
+  color: #CFAD81;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  transition: .2s;
+  cursor: pointer;
+}
+
+.pencil-icon:hover {
+  background: #CFAD81;
+  color: #fff;
+}
+
+.auto-width-modal {
+  width: auto !important;
+  max-width: 800px !important;
+  display: inline-block;
+}
+
+.big-icon {
+  width: 60px;
+  height: 60px;
+    padding: 10px;
+}
+
+.big-icon:first-child {
+  margin-right: 15px;
+}
+
+.profile-btn {
+  border-radius: 20px !important;
+  width: 100%;
+  margin-bottom: 20px;
 }
