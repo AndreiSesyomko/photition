@@ -6,7 +6,7 @@ function EditCardModal({ show, onHide }) {
   const [desc, setDesc] = useState('')
   const [checked, setChecked] = useState(false)
   const [img, setImg] = useState(null);
-     const [errors, setErrors] = useState(null);
+  const [errors, setErrors] = useState(null);
 
     const validate = () => {
         const newErrors = {};
@@ -17,7 +17,7 @@ function EditCardModal({ show, onHide }) {
         return Object.keys(newErrors).length === 0;
     };
 
-        const validateExit = () => {
+    const validateExit = () => {
       const newErrors = {};
       if (!(checked)) newErrors.terms = "Подтвердите выход!";
 
@@ -25,7 +25,7 @@ function EditCardModal({ show, onHide }) {
         return Object.keys(newErrors).length === 0;
     }
 
-        const handleExit = () => {
+    const handleExit = () => {
         if(validateExit()) {
 
         }
@@ -54,16 +54,16 @@ function EditCardModal({ show, onHide }) {
             <Form.Control.Feedback type="invalid">{errors?.img}</Form.Control.Feedback>
           </Form.Group>
           <Form.Group className="mb-3">
-                            <Form.Label>Username</Form.Label>
-                            <Form.Control
-                                placeholder="Название"
-                                value={title}
-                                isInvalid={errors?.name}
-                                onChange={e => setTitle(e.target.value)}
-                                className="mb-3"
-                            />
-                            <Form.Control.Feedback type="invalid">{errors?.name}</Form.Control.Feedback>
-                        </Form.Group>
+              <Form.Label>Название</Form.Label>
+              <Form.Control
+                  placeholder="Название"
+                  value={title}
+                  isInvalid={errors?.name}
+                  onChange={e => setTitle(e.target.value)}
+                  className="mb-3"
+              />
+              <Form.Control.Feedback type="invalid">{errors?.name}</Form.Control.Feedback>
+          </Form.Group>
           <Form.Control value={desc} onChange={e => setDesc(e.target.value)} placeholder="Новое описание" as="textarea" rows={3} className="mb-3" />
           <Button onClick={handleSubmit} variant="primary" className="w-100 mb-3">
             Изменить
