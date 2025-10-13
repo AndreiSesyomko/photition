@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, {useContext, useState} from 'react';
 import { Card, Image, Form, Button, InputGroup } from 'react-bootstrap';
 import {Heart, Chat, Person, ArrowRight, Arrow90degRight} from 'react-bootstrap-icons';
 import Photo from "../components/Photo";
 import Comment from '../components/Comment.jsx'
 import EditCommentModal from '../components/modals/EditCommentModal.jsx';
+import {comment, like} from "../api/cardApi";
+import {observer} from "mobx-react-lite";
+import {Context} from "../index";
 
 
 const test = {
@@ -134,7 +137,32 @@ const test = {
 const PhotoDetail = ({ photo=test }) => {
     const [replyInput, setReplyInput] = useState(null);
     const [showEditModal, setShowEditModal] = useState(false);
+    const [commentText, setCommentText] = useState(null);
     const [editableComment, setEditableComment] = useState(null);
+    const [isLiked, setIsLiked] = useState(false);
+    const [color, setColor] = useState('#000');
+    const {user} = useContext(Context)
+
+    const handleLike = () => {
+        if(!isLiked){
+            like(user.user.id, photo.id).then(data => {
+                if(data) console.log(data)
+                photo.likes += 1
+                setIsLiked(true)
+            })
+        } else {
+            like(user.user.id, photo.id, true).then(data => {
+                if(data) console.log(data)
+                photo.likes -= 1
+                setIsLiked(false)
+            })
+        }
+    }
+
+    const handleComment = () => {
+        comment(user.user.id, photo.id, commentText).then(data => {})
+    }
+
     return (
         <>
         <div className='main' style={{height: 'auto'}}>
@@ -154,7 +182,7 @@ const PhotoDetail = ({ photo=test }) => {
                     {photo.photo ? <Photo photoUrl={photo.photo} />:
                         <div style={{height: '100%', backgroundColor: '#ccc'}}></div>}
                     <Card.Footer className="d-flex justify-content-start align-items-center" style={{ padding: '8px 12px', borderRadius: '0 0 15px 15px' }}>
-                        <div className="d-flex align-items-center my-icon" style={{gap: '10px', marginRight: '24px'}}>
+                        <div onMouseEnter={() => setColor('#c6a174')} onMouseLeave={() => !isLiked && setColor('#000')} onClick={handleLike} className="d-flex align-items-center my-icon" style={{gap: '10px', marginRight: '24px', color: color}}>
                             <span style={{fontWeight: '600'}}>{photo.likes}</span>
                             <Heart style={{marginTop: '3px'}} size={20}/>
                         </div>
@@ -170,10 +198,12 @@ const PhotoDetail = ({ photo=test }) => {
                         <InputGroup className="mb-3 mt-3">
                             <Form.Control
                             placeholder="Комментарий"
+                            value={commentText}
+                            onChange={(e) => setCommentText(e.target.value)}
                             aria-label="Recipient's username"
                             aria-describedby="basic-addon2"
                             />
-                            <Button variant="primary" id="button-addon2">
+                            <Button onClick={handleComment} variant="primary" id="button-addon2">
                                 Отправить <ArrowRight/>
                             </Button>
                         </InputGroup>
@@ -192,4 +222,4 @@ const PhotoDetail = ({ photo=test }) => {
     );
 };
 
-export default PhotoDetail;
+export default observer(PhotoDetail);
