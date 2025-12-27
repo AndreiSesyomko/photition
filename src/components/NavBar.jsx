@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Navbar, Container, Form, FormControl, Nav, Image } from "react-bootstrap";
 import logo from '../assets/logo.png'
 import '../styles/index.css';
-import {BellFill, Person} from "react-bootstrap-icons";
+import {BellFill, GearFill, Person} from "react-bootstrap-icons";
 import {useNavigate} from "react-router-dom";
 import NotificationsModal from "./modals/NotificationsModal";
+import { Context } from "..";
 
 
 const CustomNavbar = () => {
   const navigate = useNavigate();
   const [showNoties, setShowNoties] = useState(false);
+  const {user} = useContext(Context)
   return (
       <Navbar style={{width: '100%'}} bg="dark" expand="lg" className="photition-navbar">
         <Container>
@@ -23,6 +25,7 @@ const CustomNavbar = () => {
           <Nav className="ms-auto nav-icons">
             <Nav.Link onClick={() => navigate('/profile')}><Person className='nav-icon' /></Nav.Link>
             <Nav.Link onClick={() => setShowNoties(true)}><BellFill className='nav-icon' /></Nav.Link>
+            {user.isAuth && <Nav.Link onClick={() => navigate('/moderation')}><GearFill className='nav-icon' /></Nav.Link>}
           </Nav>
         </Container>
         <NotificationsModal show={showNoties} onHide={() => setShowNoties(false)}/>
