@@ -36,6 +36,7 @@ export const deleteComment = async (comment) => {
     }
     catch (error) {
         console.log(error)
+        return {error: error};
     }
 }
 
@@ -45,42 +46,61 @@ export const deletePhoto = async (photo) => {
     }
     catch (error) {
         console.log(error)
+        return {error: error};
     }
 }
 
-export const getPhoto = async () => {
+export const getPhoto = async (photo) => {
     try {
-
+        const {data} = await $authHost.get(`api/photos/${photo}/`)
+        return data
     }
     catch (error) {
         console.log(error)
     }
 }
 
-export const photoList = async () => {
-    try {}
+export const photoList = async (params) => {
+    try {
+        const searchParams = new URLSearchParams()
+        for (const key in params) {
+            searchParams.append(key, params[key])
+        }
+        const query = 'api/photos/?' + searchParams.toString()
+        const {data} = await $authHost.get(`api/photos/${query}/`)
+        return data
+    }
     catch (error) {
         console.log(error)
     }
 }
 
-export const restorePhoto = async () => {
-    try {}
+export const restorePhoto = async (photo) => {
+    try {
+        const {data} = await $authHost.post(`api/photos/${photo}/restore/`)
+        return data
+    }
     catch (error) {
         console.log(error)
     }
 }
 
-export const updatePhoto = async () => {
-    try {}
-    catch (error) {
+export const updatePhoto = async (photo, content) => {
+    try {
+        const {data} = await $authHost.patch(`api/photos/${photo}/update/`, content)
+        return data
+    } catch(error) {
         console.log(error)
+        return {error: error};
     }
 }
 
-export const updateComment = async () => {
-    try {}
-    catch (error) {
+export const updateComment = async (comment, content) => {
+    try {
+        const {data} = await $authHost.patch(`api/photos/comment/update/${comment}/`, content)
+        return data
+    } catch(error) {
         console.log(error)
+        return {error: error};
     }
 }
