@@ -1,9 +1,10 @@
-import {AUTH_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, PHOTO_ROUTE, PROFILE_ROUTE, REGISTRATION_ROUTE} from "./consts";
+import {AUTH_ROUTE, MAIN_ROUTE, MODERATOR_ROUTE, PHOTO_ROUTE, PROFILE_ROUTE} from "./consts";
 import Auth from "./pages/Auth";
 import Main from "./pages/Main";
 import {Navigate} from "react-router-dom";
 import PhotoDetail from "./pages/PhotoDetail";
 import Profile from "./pages/Profile"
+import Moderation from "./pages/Moderation";
 
 
 export const publicRoutes = [
@@ -14,4 +15,6 @@ export const publicRoutes = [
     {path: "*", element: <Navigate to={"/"}/>, exact: true}
 ]
 
-export const authRoutes = []
+export const authRoutes = [
+    { path: MODERATOR_ROUTE, element: <Moderation/>, exact: true }
+]
