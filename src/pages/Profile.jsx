@@ -30,24 +30,25 @@ const Profile = () => {
         }
         
     return (
-        <div style={{width: '60%', margin: '0 auto', marginTop: '25px'}}>
+        <div style={{width:'100%'}}>
             <div className="profile-header d-flex justify-content-between align-items-center">
-                <div className="d-flex align-items-center" style={{ gap: '8px' }}>
-                    <div style={{ background: '#fff', borderRadius: '50%', height: '177px', width: '177px', overflow: 'hidden', border: '1px solid #CFAD81', padding: '16px', transform: 'scale(0.8)' }}>
-                        {user.user.avatar ? <Image style={{height: '100%', width: '100%', borderRadius: '50%'}} src={user.user.avatar} /> : <Person style={{height: '100%', width: '100%', borderRadius: '50%'}} className='profile-avatar' />}
+                <div className="d-flex align-items-center">
+                    <div>
+                        {user.user.avatar ? <Image className='profile-avatar' src={user.user.avatar} /> :
+                            <Person className='profile-avatar' />}
                     </div>
-                    <h1 style={{ fontWeight: '700', color: '#CFAD81' }}>{user.user.username}</h1>
+                    <h3>{user.user.username}</h3>
                 </div>
                 <div className='d-flex'>
                     <PencilFill onClick={() => setShowEditUserModal(true)} className="pencil-icon big-icon"/>
                     <InfoLg onClick={() => setShowUserInfoModal(true)} className="pencil-icon big-icon"/>
                 </div>
             </div>
-            <div className="main" style={{width: '100%', overflow: "hidden"}}>
+            <div className="main profile-main">
                 <Button onClick={() => setShowCreateCardModal(true)} className='profile-btn'>Создать <Plus/></Button>
                 <Button onClick={() => setShowRecentlyDeletedModal(true)} className='profile-btn'>Восстановить</Button>
                 <MyDropdown handleSelect={handleSelect} selected={selected} open={open} setOpen={setOpen}/>
-                <PhotoList photos={photos} style={{height: '480px'}}/>
+                <PhotoList photos={photos} style={{height: '460px'}}/>
             </div>
             <UserInfoModal user={user.user} show={showUserInfoModal} onHide={() => setShowUserInfoModal(false)}/>
             <EditProfileModal show={showEditUserModal} onHide={() => setShowEditUserModal(false)}/>

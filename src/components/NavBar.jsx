@@ -15,7 +15,7 @@ const CustomNavbar = () => {
   return (
       <Navbar style={{width: '100%'}} bg="dark" expand="lg" className="photition-navbar">
         <Container>
-          <Navbar.Brand onClick={() => navigate('/')}  style={{fontWeight: 'bold', cursor: 'pointer', fontSize: '1.25em', display: 'flex', justifyContent: 'start', alignItems: 'center', width: '250px'}}>
+          <Navbar.Brand onClick={() => navigate('/')}  className='nav-brand'>
             <Image width="61" height="61" src={logo}></Image>
             Photition
           </Navbar.Brand>

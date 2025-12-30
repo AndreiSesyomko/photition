@@ -37,18 +37,8 @@ const Auth = () => {
     }
   };
     return (
-        <Container
-            className="d-flex justify-content-center align-items-center"
-            style={{ minHeight: '80vh', margin: 'auto' }}
-        >
-            <Card
-                style={{
-                    width: '400px',
-                    borderRadius: '15px',
-                    padding: '20px',
-                    position: 'relative'
-                }}
-            >
+        <Container className="d-flex justify-content-center align-items-center auth-container">
+            <Card className="auth-card">
                 <h3 className="text-center mb-4">
                     {isRegister ? 'Регистрация' : 'Авторизация'}
                 </h3>
@@ -102,7 +92,8 @@ const Auth = () => {
 
                 <Row className="mt-3">
                     <Col className="text-center" style={{color: '#CFAD81'}} onClick={switchMode}>
-                        {isRegister ? 'Уже есть аккаунт? ' : 'Нет аккаунта? '} <span onClick={switchMode} style={{textDecoration: 'underline', cursor: 'pointer'}}>{isRegister ? 'Войти! ' : 'Зарегистрироваться! '}</span>
+                        {isRegister ? 'Уже есть аккаунт? ' : 'Нет аккаунта? '} <span onClick={switchMode} className="auth-link">
+                        {isRegister ? 'Войти! ' : 'Зарегистрироваться! '}</span>
                     </Col>
                 </Row>
             </Card>

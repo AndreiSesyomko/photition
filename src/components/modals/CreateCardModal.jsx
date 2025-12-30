@@ -39,7 +39,7 @@ function CreateCardModal({ show, onHide }) {
             <Form.Control.Feedback type="invalid">{errors?.img}</Form.Control.Feedback>
           </Form.Group>
           <Form.Group className="mb-3">
-                            <Form.Label>Username</Form.Label>
+                            <Form.Label>Название</Form.Label>
                             <Form.Control
                                 placeholder="Название"
                                 value={title}

@@ -4,7 +4,7 @@ import {Heart, Chat, Person, ArrowRight, Arrow90degRight} from 'react-bootstrap-
 import Photo from "../components/Photo";
 import Comment from '../components/Comment.jsx'
 import EditCommentModal from '../components/modals/EditCommentModal.jsx';
-import {comment, like} from "../api/cardApi";
+import {comment, vote} from "../api/cardApi";
 import {observer} from "mobx-react-lite";
 import {Context} from "../index";
 
@@ -145,13 +145,13 @@ const PhotoDetail = ({ photo=test }) => {
 
     const handleLike = () => {
         if(!isLiked){
-            like(user.user.id, photo.id).then(data => {
+            vote(user.user.id, photo.id).then(data => {
                 if(data) console.log(data)
                 photo.likes += 1
                 setIsLiked(true)
             })
         } else {
-            like(user.user.id, photo.id, true).then(data => {
+            vote(user.user.id, photo.id, true).then(data => {
                 if(data) console.log(data)
                 photo.likes -= 1
                 setIsLiked(false)
@@ -166,13 +166,11 @@ const PhotoDetail = ({ photo=test }) => {
     return (
         <>
         <div className='main' style={{height: 'auto'}}>
-            <Card
-                    className="photo-card"
-                >
+            <Card className="photo-card">
                     <Card.Header className="d-flex justify-content-between align-items-center" style={{ padding: '8px 24px' }}>
                         <div className="d-flex align-items-center" style={{ gap: '8px' }}>
-                            <div style={{ borderRadius: '50%', height: '59px', width: '59px', overflow: 'hidden', border: '1px solid #CFAD81', padding: '4px', transform: 'scale(0.8)' }}>
-                                {photo.user.avatar ? <Image style={{height: '100%', width: '100%', borderRadius: '50%'}} src={photo.user.avatar} /> : <Person className="card-avatar" />}
+                            <div className="user-avatar-wrapper">
+                                {photo.user.avatar ? <Image className="user-avatar-image" src={photo.user.avatar} /> : <Person className="card-avatar" />}
                             </div>
                             <span style={{ fontWeight: '700', color: '#CFAD81' }}>{photo.user.username}</span>
                         </div>
@@ -182,7 +180,11 @@ const PhotoDetail = ({ photo=test }) => {
                     {photo.photo ? <Photo photoUrl={photo.photo} />:
                         <div style={{height: '100%', backgroundColor: '#ccc'}}></div>}
                     <Card.Footer className="d-flex justify-content-start align-items-center" style={{ padding: '8px 12px', borderRadius: '0 0 15px 15px' }}>
-                        <div onMouseEnter={() => setColor('#c6a174')} onMouseLeave={() => !isLiked && setColor('#000')} onClick={handleLike} className="d-flex align-items-center my-icon" style={{gap: '10px', marginRight: '24px', color: color}}>
+                        <div
+                            onMouseEnter={() => setColor('#c6a174')}
+                            onMouseLeave={() => !isLiked && setColor('#000')}
+                            onClick={handleLike} className="d-flex align-items-center my-icon"
+                            style={{gap: '10px', marginRight: '24px', color: color}}>
                             <span style={{fontWeight: '600'}}>{photo.likes}</span>
                             <Heart style={{marginTop: '3px'}} size={20}/>
                         </div>
