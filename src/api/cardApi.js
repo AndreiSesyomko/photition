@@ -60,7 +60,7 @@ export const getPhoto = async (photo) => {
     }
 }
 
-export const photoList = async (params) => {
+export const getPhotoList = async (params) => {
     try {
         const searchParams = new URLSearchParams()
         for (const key in params) {

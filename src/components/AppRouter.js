@@ -2,7 +2,7 @@ import {observer} from "mobx-react-lite";
 import {useContext} from "react";
 import {Context} from "../index";
 import {Route, Routes} from "react-router-dom";
-import {authRoutes, publicRoutes} from "../routes";
+import {authRoutes, publicRoutes, staffRoutes} from "../routes";
 
 
 const AppRouter = observer(() => {
@@ -12,6 +12,14 @@ const AppRouter = observer(() => {
         <Routes>
             {
                 user.isAuth && authRoutes.map(route =>
+                    <Route exact={route.exact}
+                           path={route.path}
+                           element={route.element}
+                           key={route.path} />
+                )
+            }
+            {
+                user.isStaff && staffRoutes.map(route =>
                     <Route exact={route.exact}
                            path={route.path}
                            element={route.element}

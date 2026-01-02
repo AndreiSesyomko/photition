@@ -1,5 +1,8 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Alert, Button, Card, Col, Container, Form, Row} from "react-bootstrap";
+import {login, registration} from "../api/userApi";
+import {Context} from "../index";
+import {observer} from "mobx-react-lite";
 
 const Auth = () => {
     const [isRegister, setIsRegister] = useState(false);
@@ -7,6 +10,7 @@ const Auth = () => {
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
     const [errors, setErrors] = useState(null);
+    const {user} = useContext(Context)
 
     const switchMode = () => {
         setIsRegister(!isRegister);
@@ -34,6 +38,23 @@ const Auth = () => {
   const handleSubmit = e => {
     e.preventDefault();
     if (validate()) {
+        let response;
+        if(isRegister) {
+            response = registration({email, password, username})
+        } else {
+            response = login({email, password})
+        }
+        response.then((data) => {
+            if('error' in data){
+                setErrors({...errors, 'error': data.error})
+            } else {
+                user.setIsAuth(true)
+                user.setUser(data)
+                user.setIsStaff(data.is_staff)
+                localStorage.setItem('token', data.token)
+            }
+        })
+
     }
   };
     return (
@@ -96,9 +117,19 @@ const Auth = () => {
                         {isRegister ? 'Войти! ' : 'Зарегистрироваться! '}</span>
                     </Col>
                 </Row>
+                {errors.error && (
+                    <Alert
+                        variant="danger"
+                        onClose={() => setErrors(null)}
+                        dismissible
+                        className="error-alert"
+                    >
+                        {errors.error}
+                    </Alert>
+                )}
             </Card>
         </Container>
     );
 };
 
-export default Auth;
+export default observer(Auth);
