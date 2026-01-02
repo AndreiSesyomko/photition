@@ -4,8 +4,6 @@ import { Context } from "../../"
 import { Image, Modal, Button } from "react-bootstrap"
 
 const Moderation = ({show, onHide, target}) => {
-    const {photoList} = useContext(Context)
-    
     return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
@@ -18,10 +16,17 @@ const Moderation = ({show, onHide, target}) => {
         </div>}
         <Image style={{width: '250px', height: 'auto'}} src={target.photo} alt="photo"/>
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="primary">Одобрить</Button>
-        <Button variant="danger">Отклонить</Button>
-      </Modal.Footer>
+        {
+            target.status === 'PENDING' ?
+                <Modal.Footer>
+                    <Button variant="primary">Одобрить</Button>
+                    <Button variant="danger">Отклонить</Button>
+                </Modal.Footer>
+                :
+                <Modal.Footer>
+                    <Button variant="primary">Откатить</Button>
+                </Modal.Footer>
+        }
     </Modal>
     )
 }

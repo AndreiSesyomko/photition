@@ -5,6 +5,7 @@ export default class UserStore
     constructor()
     {
         this._isAuth = true;
+        this._isStaff = true;
         this._user = {id: 6, username: 'User', avatar: null, email: "asdas@sdas.as", registerAt: '2025-10-09'};
         makeAutoObservable(this);
     }
@@ -12,6 +13,11 @@ export default class UserStore
     setIsAuth(bool)
     {
         this._isAuth = bool;
+    }
+
+    setIsStaff(bool)
+    {
+        this._isStaff = bool;
     }
 
     setUser(user)
@@ -27,5 +33,10 @@ export default class UserStore
     get user()
     {
         return this._user;
+    }
+
+    get isStaff()
+    {
+        return this._isStaff;
     }
 }

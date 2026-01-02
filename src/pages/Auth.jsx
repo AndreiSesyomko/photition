@@ -1,5 +1,8 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Alert, Button, Card, Col, Container, Form, Row} from "react-bootstrap";
+import {login, registration} from "../api/userApi";
+import {Context} from "../index";
+import {observer} from "mobx-react-lite";
 
 const Auth = () => {
     const [isRegister, setIsRegister] = useState(false);
@@ -7,6 +10,7 @@ const Auth = () => {
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
     const [errors, setErrors] = useState(null);
+    const {user} = useContext(Context)
 
     const switchMode = () => {
         setIsRegister(!isRegister);
@@ -34,21 +38,28 @@ const Auth = () => {
   const handleSubmit = e => {
     e.preventDefault();
     if (validate()) {
+        let response;
+        if(isRegister) {
+            response = registration({email, password, username})
+        } else {
+            response = login({email, password})
+        }
+        response.then((data) => {
+            if('error' in data){
+                setErrors({...errors, 'error': data.error})
+            } else {
+                user.setIsAuth(true)
+                user.setUser(data)
+                user.setIsStaff(data.is_staff)
+                localStorage.setItem('token', data.token)
+            }
+        })
+
     }
   };
     return (
-        <Container
-            className="d-flex justify-content-center align-items-center"
-            style={{ minHeight: '80vh', margin: 'auto' }}
-        >
-            <Card
-                style={{
-                    width: '400px',
-                    borderRadius: '15px',
-                    padding: '20px',
-                    position: 'relative'
-                }}
-            >
+        <Container className="d-flex justify-content-center align-items-center auth-container">
+            <Card className="auth-card">
                 <h3 className="text-center mb-4">
                     {isRegister ? 'Регистрация' : 'Авторизация'}
                 </h3>
@@ -102,12 +113,23 @@ const Auth = () => {
 
                 <Row className="mt-3">
                     <Col className="text-center" style={{color: '#CFAD81'}} onClick={switchMode}>
-                        {isRegister ? 'Уже есть аккаунт? ' : 'Нет аккаунта? '} <span onClick={switchMode} style={{textDecoration: 'underline', cursor: 'pointer'}}>{isRegister ? 'Войти! ' : 'Зарегистрироваться! '}</span>
+                        {isRegister ? 'Уже есть аккаунт? ' : 'Нет аккаунта? '} <span onClick={switchMode} className="auth-link">
+                        {isRegister ? 'Войти! ' : 'Зарегистрироваться! '}</span>
                     </Col>
                 </Row>
+                {errors.error && (
+                    <Alert
+                        variant="danger"
+                        onClose={() => setErrors(null)}
+                        dismissible
+                        className="error-alert"
+                    >
+                        {errors.error}
+                    </Alert>
+                )}
             </Card>
         </Container>
     );
 };
 
-export default Auth;
+export default observer(Auth);

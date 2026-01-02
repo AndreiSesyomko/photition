@@ -1,11 +1,15 @@
-import { useState } from 'react';
+import {useContext, useState} from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
+import {logout, refresh, updateUser} from "../../api/userApi";
+import {Context} from "../../index";
+import {observer} from "mobx-react-lite";
 
 function EditProfileModal({ show, onHide }) {
   const [username, setUsername] = useState('')
   const [checked, setChecked] = useState(false)
   const [img, setImg] = useState(null);
-   const [errors, setErrors] = useState(null);
+  const [errors, setErrors] = useState(null);
+  const {user} = useContext(Context)
 
     const validate = () => {
         const newErrors = {};
@@ -24,13 +28,26 @@ function EditProfileModal({ show, onHide }) {
 
     const handleSubmit = () => {
         if(validate()) {
-
+            const formData = new FormData();
+            formData.append("username", username)
+            formData.append("avatar", img)
+            updateUser(formData).then((data) => {
+                user.setUser(data)
+            })
         }
+    }
+
+    const handleRefresh = () => {
+        refresh().then((data) => {
+            localStorage.setItem('token', data.session_token)
+        })
     }
 
     const handleExit = () => {
         if(validateExit()) {
-
+            logout().then((res) => {
+                localStorage.removeItem('token');
+            })
         }
     }
 
@@ -62,7 +79,7 @@ function EditProfileModal({ show, onHide }) {
               />
               <Form.Control.Feedback type="invalid">{errors?.name}</Form.Control.Feedback>
           </Form.Group>
-          <Button variant="primary" className="w-100 mb-3">
+          <Button onClick={handleRefresh} variant="primary" className="w-100 mb-3">
             Сгенерировать новый токен
           </Button>
           <Button onClick={handleSubmit} variant="primary" className="w-100 mb-3">
@@ -92,4 +109,4 @@ function EditProfileModal({ show, onHide }) {
   );
 }
 
-export default EditProfileModal;
+export default observer(EditProfileModal);
