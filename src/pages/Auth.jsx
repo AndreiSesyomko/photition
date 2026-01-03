@@ -3,6 +3,7 @@ import {Alert, Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import {login, registration} from "../api/userApi";
 import {Context} from "../index";
 import {observer} from "mobx-react-lite";
+import {useNavigate} from "react-router-dom";
 
 const Auth = () => {
     const [isRegister, setIsRegister] = useState(false);
@@ -11,6 +12,7 @@ const Auth = () => {
     const [username, setUsername] = useState('');
     const [errors, setErrors] = useState(null);
     const {user} = useContext(Context)
+    const navigate = useNavigate();
 
     const switchMode = () => {
         setIsRegister(!isRegister);
@@ -26,7 +28,7 @@ const Auth = () => {
 
     const validate = () => {
         const newErrors = {};
-        if (!(username.trim().length > 4 && username.trim().length < 30)) newErrors.name = "Username должен быть не менее 4 символов и не более 30";
+        if (!(username.trim().length > 4 && username.trim().length < 30) && isRegister) newErrors.name = "Username должен быть не менее 4 символов и не более 30";
         if (!(password.trim().length > 4 && password.trim().length < 30)) newErrors.password = "Пароль должен быть не менее 4 символов и не более 30";
         if (!email.trim()) newErrors.email = "Email обязателен";
         else if (!validateEmail(email)) newErrors.email = "Неправильный email";
@@ -36,22 +38,26 @@ const Auth = () => {
     };
 
   const handleSubmit = e => {
-    e.preventDefault();
-    if (validate()) {
+      console.log(errors)
+
+      if (validate()) {
         let response;
         if(isRegister) {
             response = registration({email, password, username})
         } else {
             response = login({email, password})
         }
+
         response.then((data) => {
             if('error' in data){
+                console.log(data.error.message);
                 setErrors({...errors, 'error': data.error})
             } else {
                 user.setIsAuth(true)
                 user.setUser(data)
                 user.setIsStaff(data.is_staff)
                 localStorage.setItem('token', data.token)
+                navigate('/')
             }
         })
 
@@ -117,14 +123,14 @@ const Auth = () => {
                         {isRegister ? 'Войти! ' : 'Зарегистрироваться! '}</span>
                     </Col>
                 </Row>
-                {errors.error && (
+                {errors?.error && (
                     <Alert
                         variant="danger"
                         onClose={() => setErrors(null)}
                         dismissible
                         className="error-alert"
                     >
-                        {errors.error}
+                        {errors.error.message}
                     </Alert>
                 )}
             </Card>

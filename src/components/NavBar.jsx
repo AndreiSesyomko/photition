@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { Navbar, Container, Form, FormControl, Nav, Image } from "react-bootstrap";
 import logo from '../assets/logo.png'
 import '../styles/index.css';
-import {BellFill, GearFill, Person} from "react-bootstrap-icons";
+import {BellFill, BoxArrowRight, GearFill, Person} from "react-bootstrap-icons";
 import {useNavigate} from "react-router-dom";
 import NotificationsModal from "./modals/NotificationsModal";
 import { Context } from "..";
@@ -23,9 +23,10 @@ const CustomNavbar = () => {
             <FormControl type="search" placeholder="Поиск..." className="search-input" />
           </Form>
           <Nav className="ms-auto nav-icons">
-            <Nav.Link onClick={() => navigate('/profile')}><Person className='nav-icon' /></Nav.Link>
-            <Nav.Link onClick={() => setShowNoties(true)}><BellFill className='nav-icon' /></Nav.Link>
-            {user.isAuth && <Nav.Link onClick={() => navigate('/moderation')}><GearFill className='nav-icon' /></Nav.Link>}
+              {user.isAuth && <Nav.Link onClick={() => navigate('/profile')}><Person className='nav-icon'/></Nav.Link>}
+              {user.isAuth && <Nav.Link onClick={() => setShowNoties(true)}><BellFill className='nav-icon'/></Nav.Link>}
+            {user.isStaff && <Nav.Link onClick={() => navigate('/moderation')}><GearFill className='nav-icon' /></Nav.Link>}
+              {!user.isAuth && <Nav.Link onClick={() => navigate('/auth')}><BoxArrowRight className='nav-icon'/></Nav.Link>}
           </Nav>
         </Container>
         <NotificationsModal show={showNoties} onHide={() => setShowNoties(false)}/>

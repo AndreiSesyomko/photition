@@ -85,6 +85,16 @@ export const restorePhoto = async (photo) => {
     }
 }
 
+export const getDeletedPhotos = async () => {
+    try {
+        const {data} = await $authHost.get(`api/photos/restore/`)
+        return data
+    }
+    catch (error) {
+        console.log(error)
+    }
+}
+
 export const updatePhoto = async (photo, content) => {
     try {
         const {data} = await $authHost.patch(`api/photos/${photo}/update/`, content)

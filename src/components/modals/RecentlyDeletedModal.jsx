@@ -1,4 +1,6 @@
 import { Modal, Button, Image } from 'react-bootstrap';
+import {getDeletedPhotos, restorePhoto} from "../../api/cardApi";
+import {useEffect, useState} from "react";
 
 const deletedCards = [
   {
@@ -19,6 +21,19 @@ const deletedCards = [
 ];
 
 function RecentlyDeletedModal({ show, onHide }) {
+  const [photos, setPhotos] = useState([]);
+
+  useEffect(() => {
+    getDeletedPhotos().then((photos) => {
+      setPhotos(photos);
+    })
+  }, [show])
+
+  const handleRestore = (id) => {
+    restorePhoto(id).then(() => {
+      setPhotos(photos.filter(photo => photo.id !== id));
+    })
+  }
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
@@ -49,7 +64,7 @@ function RecentlyDeletedModal({ show, onHide }) {
               )}
               <span style={{ fontWeight: 500 }}>{card.title}</span>
             </div>
-            <Button variant="primary">Восстановить</Button>
+            <Button variant="primary" onClick={() => handleRestore(card.id)}>Восстановить</Button>
           </div>
         ))}
       </Modal.Body>

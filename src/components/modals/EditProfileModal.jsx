@@ -29,8 +29,8 @@ function EditProfileModal({ show, onHide }) {
     const handleSubmit = () => {
         if(validate()) {
             const formData = new FormData();
-            formData.append("username", username)
-            formData.append("avatar", img)
+            if(username) formData.append("username", username)
+            if(img) formData.append("avatar", img)
             updateUser(formData).then((data) => {
                 user.setUser(data)
             })

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
+import {createPhoto} from "../../api/cardApi";
 
 function CreateCardModal({ show, onHide }) {
   const [title, setTitle] = useState('')
@@ -18,7 +19,13 @@ function CreateCardModal({ show, onHide }) {
 
   const handleSubmit = () => {
       if(validate()) {
-
+        const formData = new FormData();
+        formData.append('title', title);
+        if(desc) formData.append('desc', desc);
+        formData.append('img', img);
+        createPhoto(formData).then(() => {
+            onHide();
+        })
       }
   }
   return (

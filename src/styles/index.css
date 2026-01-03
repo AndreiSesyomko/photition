@@ -468,7 +468,7 @@ body {
 
 .error-alert {
   position: absolute;
-  top: 500px;
+  top: 85%;
   left: 50%;
   transform: translateX(-50%);
   width: 90%;

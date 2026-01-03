@@ -139,28 +139,30 @@ const PhotoDetail = ({ photo=test }) => {
     const [showEditModal, setShowEditModal] = useState(false);
     const [commentText, setCommentText] = useState(null);
     const [editableComment, setEditableComment] = useState(null);
-    const [isLiked, setIsLiked] = useState(false);
+    const [isLiked, setIsLiked] = useState(photo.is_voted);
     const [color, setColor] = useState('#000');
+    const [comments, setComments] = useState(photo.comments);
+    const [likes, setLikes] = useState(photo.likes);
     const {user} = useContext(Context)
 
     const handleLike = () => {
         if(!isLiked){
-            vote(user.user.id, photo.id).then(data => {
-                if(data) console.log(data)
-                photo.likes += 1
+            vote(photo.id).then(() => {
+                setLikes(likes + 1);
                 setIsLiked(true)
             })
         } else {
-            vote(user.user.id, photo.id, true).then(data => {
-                if(data) console.log(data)
-                photo.likes -= 1
+            vote(photo.id).then(() => {
+                setLikes(likes - 1);
                 setIsLiked(false)
             })
         }
     }
 
     const handleComment = () => {
-        comment(user.user.id, photo.id, commentText).then(data => {})
+        comment(photo.id, commentText).then(data => {
+            setComments([...comments, data]);
+        })
     }
 
     return (
@@ -185,7 +187,7 @@ const PhotoDetail = ({ photo=test }) => {
                             onMouseLeave={() => !isLiked && setColor('#000')}
                             onClick={handleLike} className="d-flex align-items-center my-icon"
                             style={{gap: '10px', marginRight: '24px', color: color}}>
-                            <span style={{fontWeight: '600'}}>{photo.likes}</span>
+                            <span style={{fontWeight: '600'}}>{likes}</span>
                             <Heart style={{marginTop: '3px'}} size={20}/>
                         </div>
                     </Card.Footer>
@@ -209,7 +211,7 @@ const PhotoDetail = ({ photo=test }) => {
                                 Отправить <ArrowRight/>
                             </Button>
                         </InputGroup>
-                        {photo.comments.map(comment => <Comment 
+                        {comments.map(comment => <Comment
                             key={comment.id} 
                             comment={comment} 
                             replyInput={replyInput} 
